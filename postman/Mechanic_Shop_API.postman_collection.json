@@ -1,0 +1,273 @@
+{
+  "info": {
+    "name": "Mechanic Shop API",
+    "_postman_id": "8c2c49d8-2b63-4a9f-9d3c-0a2f2f35b7cc",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:5000"
+    },
+    {
+      "key": "customerId",
+      "value": "1"
+    },
+    {
+      "key": "mechanicId",
+      "value": "1"
+    },
+    {
+      "key": "ticketId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Customers - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/customers/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "customers"
+          ],
+          "trailingSlash": true
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"phone\": \"555-1111\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Customers - Get All",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/customers/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "customers"
+          ],
+          "trailingSlash": true
+        }
+      }
+    },
+    {
+      "name": "Customers - Update (PUT)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/customers/{{customerId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "customers",
+            "{{customerId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Jane Updated\",\n  \"email\": \"jane_updated@example.com\",\n  \"phone\": \"555-2222\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Customers - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/customers/{{customerId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "customers",
+            "{{customerId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Mechanics - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/mechanics/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "mechanics"
+          ],
+          "trailingSlash": true
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Alex Tech\",\n  \"email\": \"alex@example.com\",\n  \"phone\": \"555-3333\",\n  \"salary\": 65000\n}"
+        }
+      }
+    },
+    {
+      "name": "Mechanics - Get All",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/mechanics/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "mechanics"
+          ],
+          "trailingSlash": true
+        }
+      }
+    },
+    {
+      "name": "Mechanics - Update (PUT)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/mechanics/{{mechanicId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "mechanics",
+            "{{mechanicId}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"phone\": \"555-9999\",\n  \"salary\": 70000\n}"
+        }
+      }
+    },
+    {
+      "name": "Mechanics - Delete",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/mechanics/{{mechanicId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "mechanics",
+            "{{mechanicId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Service Tickets - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/service-tickets/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "service-tickets"
+          ],
+          "trailingSlash": true
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"vin\": \"1HGCM82633A004352\",\n  \"service_date\": \"2026-02-28\",\n  \"service_desc\": \"Brake inspection\",\n  \"customer_id\": {{customerId}}\n}"
+        }
+      }
+    },
+    {
+      "name": "Service Tickets - Assign Mechanic",
+      "request": {
+        "method": "PUT",
+        "url": {
+          "raw": "{{baseUrl}}/service-tickets/{{ticketId}}/assign-mechanic/{{mechanicId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "service-tickets",
+            "{{ticketId}}",
+            "assign-mechanic",
+            "{{mechanicId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Service Tickets - Remove Mechanic",
+      "request": {
+        "method": "PUT",
+        "url": {
+          "raw": "{{baseUrl}}/service-tickets/{{ticketId}}/remove-mechanic/{{mechanicId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "service-tickets",
+            "{{ticketId}}",
+            "remove-mechanic",
+            "{{mechanicId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Service Tickets - Get All",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/service-tickets/",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "service-tickets"
+          ],
+          "trailingSlash": true
+        }
+      }
+    }
+  ]
+}
