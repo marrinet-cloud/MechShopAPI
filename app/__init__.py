@@ -1,5 +1,5 @@
 from flask import Flask
-from .extensions import db, ma
+from .extensions import db, ma, limiter, cache
 
 
 def create_app(config_name: str = "DevelopmentConfig"):
@@ -8,6 +8,8 @@ def create_app(config_name: str = "DevelopmentConfig"):
 
     db.init_app(app)
     ma.init_app(app)
+    limiter.init_app(app)
+    cache.init_app(app)
 
     from .blueprints.customers import customers_bp
     app.register_blueprint(customers_bp, url_prefix="/customers")
@@ -17,6 +19,9 @@ def create_app(config_name: str = "DevelopmentConfig"):
 
     from .blueprints.service_tickets import service_tickets_bp
     app.register_blueprint(service_tickets_bp, url_prefix="/service-tickets")
+
+    from .blueprints.inventory import inventory_bp
+    app.register_blueprint(inventory_bp, url_prefix="/inventory")
 
     @app.get("/")
     def health():

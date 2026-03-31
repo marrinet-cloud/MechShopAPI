@@ -1,273 +1,909 @@
 {
   "info": {
+    "_postman_id": "5564d199-2e48-495f-b68e-7a9e12648d35",
     "name": "Mechanic Shop API",
-    "_postman_id": "8c2c49d8-2b63-4a9f-9d3c-0a2f2f35b7cc",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51877159",
+    "_collection_link": "https://go.postman.co/collection/51877159-5564d199-2e48-495f-b68e-7a9e12648d35?source=collection_link"
   },
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://127.0.0.1:5000"
-    },
-    {
-      "key": "customerId",
-      "value": "1"
-    },
-    {
-      "key": "mechanicId",
-      "value": "1"
-    },
-    {
-      "key": "ticketId",
-      "value": "1"
-    }
-  ],
   "item": [
     {
-      "name": "Customers - Create",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/customers/",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "customers"
-          ],
-          "trailingSlash": true
+      "name": "Mechanic",
+      "item": [
+        {
+          "name": "Get Mechanic",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true,
+            "followOriginalHttpMethod": false
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"John Smith\",\r\n  \"email\": \"joohn@example.com\",\r\n  \"phone\": \"555-123-4567\",\r\n  \"salary\": 60000\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/mechanics/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mechanics",
+                ""
+              ]
+            }
+          },
+          "response": []
         },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"Jane Doe\",\n  \"email\": \"jane@example.com\",\n  \"phone\": \"555-1111\"\n}"
+        {
+          "name": "Create Mechanic",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzc1MDIxNzIzLCJpYXQiOjE3NzQ5MzUzMjN9.W_bUgAaJe9FfMYI1plNNbZMerfiERjwqL42LxdU6-Pk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Mike Mechanic\",\r\n  \"email\": \"mike@example.com\",\r\n  \"phone\": \"555-222-3333\",\r\n  \"salary\": 65000,\r\n  \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/mechanics/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mechanics",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Mechanic",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"add_ids\": [{{mechanic_id}}],\r\n  \"remove_ids\": []\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/service-tickets/{{ticket_id}}/edit",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "service-tickets",
+                "{{ticket_id}}",
+                "edit"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Mechanic",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/mechanics/{{mechanic_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mechanics",
+                "{{mechanic_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Mechanic By ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/mechanics/{{mechanic_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mechanics",
+                "{{mechanic_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mechanic Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"mike@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/mechanics/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mechanics",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Most Active Mechanics",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/mechanics/most-active",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mechanics",
+                "most-active"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Assigned Tickets",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/mechanics/my-tickets",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "mechanics",
+                "my-tickets"
+              ]
+            }
+          },
+          "response": []
         }
-      }
+      ]
     },
     {
-      "name": "Customers - Get All",
+      "name": "cutsomer",
+      "item": [
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Jane Customer\",\r\n  \"email\": \"jane@example.com\",\r\n  \"phone\": \"555-111-2222\",\r\n  \"password\": \"password123\",\r\n  \"is_admin\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/customers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET Customers (Admin + Pagination)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/customers?page=1&per_page=5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "per_page",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Customer",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Jane Updated\",\r\n  \"phone\": \"555-333-4444\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/{{customer_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "{{customer_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Customer",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/customers/{{customer_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "{{customer_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Admin Customer",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Admin User\",\r\n  \"email\": \"admin@example.com\",\r\n  \"phone\": \"555-999-0000\",\r\n  \"password\": \"password123\",\r\n  \"is_admin\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Customer Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"jane@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"admin@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Tickets",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{customer_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/customers/my-tickets",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "my-tickets"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Service Tickets",
+      "item": [
+        {
+          "name": "Create Service Ticket",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwicm9sZSI6ImN1c3RvbWVyIiwiZXhwIjoxNzc1MDIxNjYxLCJpYXQiOjE3NzQ5MzUyNjF9.gRJL64ZxAuTlxwPGKfIzuQ_AsqryHc2fml2RcpJZBGs",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"vin\": \"1HGCM82633A123456\",\r\n  \"service_date\": \"2026-03-29\",\r\n  \"service_desc\": \"Brake replacement\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/service-tickets/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "service-tickets",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Service Tickets",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/service-tickets/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "service-tickets",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Mechanic To Service Ticket",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/service-tickets/{{ticket_id}}/assign-mechanic/{{mechanic_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "service-tickets",
+                "{{ticket_id}}",
+                "assign-mechanic",
+                "{{mechanic_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Mechanic From Service Ticket",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/service-tickets/{{ticket_id}}/remove-mechanic/{{mechanic_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "service-tickets",
+                "{{ticket_id}}",
+                "remove-mechanic",
+                "{{mechanic_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Service Ticket",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"service_desc\": \"Full brake replacement\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/service-tickets/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "service-tickets",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mark as Completed",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/service-tickets/{{ticket_id}}/complete",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "service-tickets",
+                "{{ticket_id}}",
+                "complete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        {
+          "name": "Create Inventory Part",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Brake Pad\",\r\n  \"price\": 79.99\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Inventory",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/inventory/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Inventory By ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/inventory/{{part_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "{{part_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Inventory Part",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Premium Brake Pad\",\r\n  \"price\": 99.99\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/inventory/{{part_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "{{part_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Inventory Part",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/inventory/{{part_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "inventory",
+                "{{part_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add Part To Service Ticket",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{mechanic_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/service-tickets/{{ticket_id}}/add-part/{{part_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "service-tickets",
+                "{{ticket_id}}",
+                "add-part",
+                "{{part_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
       "request": {
         "method": "GET",
+        "header": [],
         "url": {
-          "raw": "{{baseUrl}}/customers/",
+          "raw": "{{base_url}}/",
           "host": [
-            "{{baseUrl}}"
+            "{{base_url}}"
           ],
           "path": [
-            "customers"
-          ],
-          "trailingSlash": true
-        }
-      }
-    },
-    {
-      "name": "Customers - Update (PUT)",
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/customers/{{customerId}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "customers",
-            "{{customerId}}"
-          ]
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"Jane Updated\",\n  \"email\": \"jane_updated@example.com\",\n  \"phone\": \"555-2222\"\n}"
-        }
-      }
-    },
-    {
-      "name": "Customers - Delete",
-      "request": {
-        "method": "DELETE",
-        "url": {
-          "raw": "{{baseUrl}}/customers/{{customerId}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "customers",
-            "{{customerId}}"
+            ""
           ]
         }
-      }
-    },
-    {
-      "name": "Mechanics - Create",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/mechanics/",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "mechanics"
-          ],
-          "trailingSlash": true
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"Alex Tech\",\n  \"email\": \"alex@example.com\",\n  \"phone\": \"555-3333\",\n  \"salary\": 65000\n}"
-        }
-      }
-    },
-    {
-      "name": "Mechanics - Get All",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "{{baseUrl}}/mechanics/",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "mechanics"
-          ],
-          "trailingSlash": true
-        }
-      }
-    },
-    {
-      "name": "Mechanics - Update (PUT)",
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/mechanics/{{mechanicId}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "mechanics",
-            "{{mechanicId}}"
-          ]
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"phone\": \"555-9999\",\n  \"salary\": 70000\n}"
-        }
-      }
-    },
-    {
-      "name": "Mechanics - Delete",
-      "request": {
-        "method": "DELETE",
-        "url": {
-          "raw": "{{baseUrl}}/mechanics/{{mechanicId}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "mechanics",
-            "{{mechanicId}}"
-          ]
-        }
-      }
-    },
-    {
-      "name": "Service Tickets - Create",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/service-tickets/",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "service-tickets"
-          ],
-          "trailingSlash": true
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"vin\": \"1HGCM82633A004352\",\n  \"service_date\": \"2026-02-28\",\n  \"service_desc\": \"Brake inspection\",\n  \"customer_id\": {{customerId}}\n}"
-        }
-      }
-    },
-    {
-      "name": "Service Tickets - Assign Mechanic",
-      "request": {
-        "method": "PUT",
-        "url": {
-          "raw": "{{baseUrl}}/service-tickets/{{ticketId}}/assign-mechanic/{{mechanicId}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "service-tickets",
-            "{{ticketId}}",
-            "assign-mechanic",
-            "{{mechanicId}}"
-          ]
-        }
-      }
-    },
-    {
-      "name": "Service Tickets - Remove Mechanic",
-      "request": {
-        "method": "PUT",
-        "url": {
-          "raw": "{{baseUrl}}/service-tickets/{{ticketId}}/remove-mechanic/{{mechanicId}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "service-tickets",
-            "{{ticketId}}",
-            "remove-mechanic",
-            "{{mechanicId}}"
-          ]
-        }
-      }
-    },
-    {
-      "name": "Service Tickets - Get All",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "{{baseUrl}}/service-tickets/",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "service-tickets"
-          ],
-          "trailingSlash": true
-        }
-      }
+      },
+      "response": []
     }
   ]
 }

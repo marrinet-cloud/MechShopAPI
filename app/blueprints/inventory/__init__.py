@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-service_tickets_bp = Blueprint("service_tickets_bp", __name__)
+inventory_bp = Blueprint("inventory_bp", __name__)
 
 from . import routes  # noqa: F401
