@@ -3,10 +3,10 @@ info:
   title: "Mechanic Shop API"
   description: "Swagger documentation generated from the uploaded project. Covers customers, mechanics, inventory, and service ticket blueprints as implemented in the current codebase."
   version: "1.0.0"
-host: "127.0.0.1:5000"
+host: "mechshopapi.onrender.com"
 basePath: "/"
 schemes:
-  - "http"
+  - "https"
 consumes:
   - "application/json"
 produces:

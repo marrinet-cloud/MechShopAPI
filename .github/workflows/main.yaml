@@ -1,4 +1,4 @@
-name: Flask CI
+name: Flask CI/CD
 
 on:
   push:
@@ -52,3 +52,14 @@ jobs:
       - name: Run tests
         run: |
           python -m unittest discover -s tests -p "test_*.py"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
