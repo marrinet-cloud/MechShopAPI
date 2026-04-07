@@ -1,5 +1,6 @@
 from flask import Flask
 from .extensions import db, ma, limiter, cache
+from flask_swagger_ui import get_swaggerui_blueprint
 
 
 def create_app(config_name: str = "DevelopmentConfig"):
@@ -23,10 +24,18 @@ def create_app(config_name: str = "DevelopmentConfig"):
     from .blueprints.inventory import inventory_bp
     app.register_blueprint(inventory_bp, url_prefix="/inventory")
 
+    SWAGGER_URL = "/api/docs"
+    API_URL = "/static/swagger.yaml"
+
+    swaggerui_blueprint = get_swaggerui_blueprint(
+        SWAGGER_URL,
+        API_URL,
+        config={"app_name": "Mechanic Shop API"}
+    )
+    app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+
     @app.get("/")
     def health():
         return {"status": "ok"}
-
-    print(app.url_map)
 
     return app

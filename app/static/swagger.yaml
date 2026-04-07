@@ -1,0 +1,1082 @@
+swagger: '2.0'
+info:
+  title: "Mechanic Shop API"
+  description: "Swagger documentation generated from the uploaded project. Covers customers, mechanics, inventory, and service ticket blueprints as implemented in the current codebase."
+  version: "1.0.0"
+host: "127.0.0.1:5000"
+basePath: "/"
+schemes:
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+tags:
+  - name: "Auth"
+  - name: "Customers"
+  - name: "Mechanics"
+  - name: "Inventory"
+  - name: "Service Tickets"
+  - name: "Health"
+
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+
+definitions:
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: string
+      errors:
+        type: object
+        additionalProperties: true
+
+  MessageResponse:
+    type: object
+    properties:
+      message:
+        type: string
+
+  CustomerPayload:
+    type: object
+    properties:
+      name:
+        type: string
+        example: "Jane Doe"
+      email:
+        type: string
+        format: email
+        example: "jane@example.com"
+      phone:
+        type: string
+        example: "555-222-1111"
+      password:
+        type: string
+        minLength: 6
+        example: "password123"
+      is_admin:
+        type: boolean
+        example: false
+    required:
+      - name
+      - email
+      - phone
+      - password
+
+  CustomerUpdatePayload:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+        format: email
+      phone:
+        type: string
+      password:
+        type: string
+        minLength: 6
+      is_admin:
+        type: boolean
+
+  CustomerResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      is_admin:
+        type: boolean
+
+  CustomerLoginPayload:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+    required:
+      - email
+      - password
+
+  CustomerLoginResponse:
+    type: object
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+      customer_id:
+        type: integer
+      role:
+        type: string
+        example: "customer"
+
+  CustomerPaginationResponse:
+    type: object
+    properties:
+      page:
+        type: integer
+      per_page:
+        type: integer
+      total:
+        type: integer
+      pages:
+        type: integer
+      has_next:
+        type: boolean
+      has_prev:
+        type: boolean
+      customers:
+        type: array
+        items:
+          $ref: "#/definitions/CustomerResponse"
+
+  MechanicPayload:
+    type: object
+    properties:
+      name:
+        type: string
+        example: "Mike Ross"
+      email:
+        type: string
+        format: email
+      phone:
+        type: string
+      salary:
+        type: number
+        format: float
+      password:
+        type: string
+        minLength: 6
+    required:
+      - name
+      - email
+      - phone
+      - salary
+      - password
+
+  MechanicUpdatePayload:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+        format: email
+      phone:
+        type: string
+      salary:
+        type: number
+        format: float
+      password:
+        type: string
+        minLength: 6
+
+  MechanicResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      salary:
+        type: number
+        format: float
+
+  MechanicLoginPayload:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+    required:
+      - email
+      - password
+
+  MechanicLoginResponse:
+    type: object
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+      mechanic_id:
+        type: integer
+      role:
+        type: string
+        example: "mechanic"
+
+  MechanicActivityResponse:
+    type: object
+    properties:
+      mechanics:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            email:
+              type: string
+            phone:
+              type: string
+            salary:
+              type: number
+              format: float
+            ticket_count:
+              type: integer
+
+  InventoryPayload:
+    type: object
+    properties:
+      name:
+        type: string
+        example: "Brake Pad"
+      price:
+        type: number
+        format: float
+        example: 49.99
+    required:
+      - name
+      - price
+
+  InventoryResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+        format: float
+
+  ServiceTicketPayload:
+    type: object
+    properties:
+      vin:
+        type: string
+        minLength: 17
+        maxLength: 17
+        example: "1HGCM82633A123456"
+      service_date:
+        type: string
+        example: "2026-04-05"
+      service_desc:
+        type: string
+        example: "Oil change and brake inspection"
+      customer_id:
+        type: integer
+        description: "Only used when an admin creates the ticket. Otherwise the API sets this automatically from the logged-in customer."
+    required:
+      - vin
+      - service_date
+      - service_desc
+
+  ServiceTicketResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      vin:
+        type: string
+      service_date:
+        type: string
+      service_desc:
+        type: string
+      customer_id:
+        type: integer
+      mechanics:
+        type: array
+        items:
+          $ref: "#/definitions/MechanicResponse"
+      parts:
+        type: array
+        items:
+          $ref: "#/definitions/InventoryResponse"
+
+  CustomerTicketsResponse:
+    type: object
+    properties:
+      customer_id:
+        type: integer
+      service_tickets:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            vin:
+              type: string
+            service_date:
+              type: string
+            service_desc:
+              type: string
+            customer_id:
+              type: integer
+
+  MechanicTicketsResponse:
+    type: object
+    properties:
+      mechanic_id:
+        type: integer
+      service_tickets:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            vin:
+              type: string
+            service_date:
+              type: string
+            service_desc:
+              type: string
+            customer_id:
+              type: integer
+
+  EditTicketMechanicsPayload:
+    type: object
+    properties:
+      add_ids:
+        type: array
+        items:
+          type: integer
+      remove_ids:
+        type: array
+        items:
+          type: integer
+
+  EditTicketMechanicsResponse:
+    type: object
+    properties:
+      message:
+        type: string
+      added_ids:
+        type: array
+        items:
+          type: integer
+      removed_ids:
+        type: array
+        items:
+          type: integer
+      ticket:
+        $ref: "#/definitions/ServiceTicketResponse"
+
+paths:
+  /:
+    get:
+      tags:
+        - "Health"
+      summary: "Health check"
+      description: "Basic API status route."
+      responses:
+        200:
+          description: "API is healthy"
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: "ok"
+
+  /customers/:
+    post:
+      tags:
+        - "Customers"
+      summary: "Create customer"
+      description: "Creates a customer account. Public route."
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerPayload"
+      responses:
+        201:
+          description: "Customer created"
+          schema:
+            $ref: "#/definitions/CustomerResponse"
+        400:
+          description: "Validation or request error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        409:
+          description: "Duplicate email"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    get:
+      tags:
+        - "Customers"
+      summary: "Get customers with pagination"
+      description: "Admin-only route. Supports query params page and per_page."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          required: false
+          default: 1
+        - in: query
+          name: per_page
+          type: integer
+          required: false
+          default: 5
+      responses:
+        200:
+          description: "Paginated customers"
+          schema:
+            $ref: "#/definitions/CustomerPaginationResponse"
+        400:
+          description: "Invalid pagination values"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Missing or invalid token"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /customers/login:
+    post:
+      tags:
+        - "Auth"
+      summary: "Login customer"
+      description: "Authenticates a customer or admin and returns a bearer token."
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerLoginPayload"
+      responses:
+        200:
+          description: "Customer login successful"
+          schema:
+            $ref: "#/definitions/CustomerLoginResponse"
+        400:
+          description: "Validation error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Invalid credentials"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /customers/my-tickets:
+    get:
+      tags:
+        - "Customers"
+      summary: "Get current customer's tickets"
+      description: "Returns the logged-in customer's service tickets. Allowed roles: customer, admin."
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "Customer tickets returned"
+          schema:
+            $ref: "#/definitions/CustomerTicketsResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /customers/{id}:
+    put:
+      tags:
+        - "Customers"
+      summary: "Update customer"
+      description: "Customers can update only their own record. Admins can update any customer and can also set is_admin."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerUpdatePayload"
+      responses:
+        200:
+          description: "Customer updated"
+          schema:
+            $ref: "#/definitions/CustomerResponse"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "Customer not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        409:
+          description: "Duplicate email"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    delete:
+      tags:
+        - "Customers"
+      summary: "Delete customer"
+      description: "Customers can delete only their own record. Admins can delete any customer."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Customer deleted"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "Customer not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /mechanics/:
+    post:
+      tags:
+        - "Mechanics"
+      summary: "Create mechanic"
+      description: "Admin-only route. Creates a mechanic account."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/MechanicPayload"
+      responses:
+        201:
+          description: "Mechanic created"
+          schema:
+            $ref: "#/definitions/MechanicResponse"
+        400:
+          description: "Validation or request error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        409:
+          description: "Duplicate email"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    get:
+      tags:
+        - "Mechanics"
+      summary: "Get all mechanics"
+      description: "Admin and mechanic route."
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "List of mechanics"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/MechanicResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /mechanics/login:
+    post:
+      tags:
+        - "Auth"
+      summary: "Login mechanic"
+      description: "Authenticates a mechanic and returns a bearer token."
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/MechanicLoginPayload"
+      responses:
+        200:
+          description: "Mechanic login successful"
+          schema:
+            $ref: "#/definitions/MechanicLoginResponse"
+        400:
+          description: "Validation error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Invalid credentials"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /mechanics/most-active:
+    get:
+      tags:
+        - "Mechanics"
+      summary: "Get most active mechanics"
+      description: "Returns mechanics ranked by number of assigned service tickets. Allowed roles: admin, mechanic."
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "Mechanic activity ranking"
+          schema:
+            $ref: "#/definitions/MechanicActivityResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /mechanics/my-tickets:
+    get:
+      tags:
+        - "Mechanics"
+      summary: "Get current mechanic's assigned tickets"
+      description: "Mechanic-only route. Returns the logged-in mechanic's assigned tickets."
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "Mechanic tickets returned"
+          schema:
+            $ref: "#/definitions/MechanicTicketsResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /mechanics/{id}:
+    get:
+      tags:
+        - "Mechanics"
+      summary: "Get mechanic by ID"
+      description: "Allowed roles: admin, mechanic."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Mechanic returned"
+          schema:
+            $ref: "#/definitions/MechanicResponse"
+        404:
+          description: "Mechanic not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    put:
+      tags:
+        - "Mechanics"
+      summary: "Update mechanic"
+      description: "Mechanics can update only their own record. Admins can update any mechanic. Salary can only be changed by admin."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/MechanicUpdatePayload"
+      responses:
+        200:
+          description: "Mechanic updated"
+          schema:
+            $ref: "#/definitions/MechanicResponse"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "Mechanic not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        409:
+          description: "Duplicate email"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    delete:
+      tags:
+        - "Mechanics"
+      summary: "Delete mechanic"
+      description: "Admin-only route."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Mechanic deleted"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        404:
+          description: "Mechanic not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /inventory/:
+    post:
+      tags:
+        - "Inventory"
+      summary: "Create inventory part"
+      description: "Admin-only route."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/InventoryPayload"
+      responses:
+        201:
+          description: "Inventory part created"
+          schema:
+            $ref: "#/definitions/InventoryResponse"
+        400:
+          description: "Request error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    get:
+      tags:
+        - "Inventory"
+      summary: "Get all inventory parts"
+      description: "Allowed roles: admin, mechanic."
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "Inventory list"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/InventoryResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /inventory/{id}:
+    get:
+      tags:
+        - "Inventory"
+      summary: "Get inventory part by ID"
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Inventory part returned"
+          schema:
+            $ref: "#/definitions/InventoryResponse"
+        404:
+          description: "Part not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    put:
+      tags:
+        - "Inventory"
+      summary: "Update inventory part"
+      description: "Admin-only route."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/InventoryPayload"
+      responses:
+        200:
+          description: "Inventory part updated"
+          schema:
+            $ref: "#/definitions/InventoryResponse"
+        404:
+          description: "Part not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    delete:
+      tags:
+        - "Inventory"
+      summary: "Delete inventory part"
+      description: "Admin-only route."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Inventory part deleted"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        404:
+          description: "Part not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /service-tickets/:
+    post:
+      tags:
+        - "Service Tickets"
+      summary: "Create service ticket"
+      description: "Allowed roles: customer, admin. For a normal customer, customer_id is set automatically from the logged-in user."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/ServiceTicketPayload"
+      responses:
+        201:
+          description: "Service ticket created"
+          schema:
+            $ref: "#/definitions/ServiceTicketResponse"
+        400:
+          description: "Request error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+    get:
+      tags:
+        - "Service Tickets"
+      summary: "Get all service tickets"
+      description: "Allowed roles: admin, mechanic."
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: "Service ticket list"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ServiceTicketResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /service-tickets/{ticket_id}/assign-mechanic/{mechanic_id}:
+    put:
+      tags:
+        - "Service Tickets"
+      summary: "Assign mechanic to service ticket"
+      description: "Allowed roles: admin, mechanic. Adds the mechanic if not already assigned."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          type: integer
+        - in: path
+          name: mechanic_id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Mechanic assigned"
+          schema:
+            $ref: "#/definitions/ServiceTicketResponse"
+        404:
+          description: "Ticket or mechanic not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /service-tickets/{ticket_id}/remove-mechanic/{mechanic_id}:
+    put:
+      tags:
+        - "Service Tickets"
+      summary: "Remove mechanic from service ticket"
+      description: "Allowed roles: admin, mechanic. Removes the mechanic if currently assigned."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          type: integer
+        - in: path
+          name: mechanic_id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Mechanic removed"
+          schema:
+            $ref: "#/definitions/ServiceTicketResponse"
+        404:
+          description: "Ticket or mechanic not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /service-tickets/{ticket_id}/edit:
+    put:
+      tags:
+        - "Service Tickets"
+      summary: "Bulk edit mechanics on a ticket"
+      description: "Allowed roles: admin, mechanic. Supply add_ids and remove_ids arrays."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/EditTicketMechanicsPayload"
+      responses:
+        200:
+          description: "Ticket updated"
+          schema:
+            $ref: "#/definitions/EditTicketMechanicsResponse"
+        400:
+          description: "Invalid payload"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "Ticket not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /service-tickets/{ticket_id}/add-part/{part_id}:
+    put:
+      tags:
+        - "Service Tickets"
+      summary: "Add inventory part to ticket"
+      description: "Allowed roles: admin, mechanic."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: ticket_id
+          required: true
+          type: integer
+        - in: path
+          name: part_id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Part added to ticket"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              ticket:
+                $ref: "#/definitions/ServiceTicketResponse"
+        404:
+          description: "Ticket or part not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /service-tickets/{id}/complete:
+    put:
+      tags:
+        - "Service Tickets"
+      summary: "Mark ticket complete"
+      description: "Allowed roles: admin, mechanic. Current implementation returns a success message only and does not persist a completion field."
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Completion message returned"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        404:
+          description: "Ticket not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"

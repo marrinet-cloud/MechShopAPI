@@ -12,8 +12,9 @@ class DevelopmentConfig:
 
 class TestingConfig:
     TESTING = True
+    DEBUG = True
     SECRET_KEY = "super-secret-key-change-this"
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:sqlMari$22@localhost/mechanic_shop_db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///testing.db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     CACHE_TYPE = "SimpleCache"
